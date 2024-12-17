@@ -12,6 +12,7 @@ public class Review {
 	private Date date;
 	private Request request;
 
+
 	public int getId() {
 		return this.id;
 	}

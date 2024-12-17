@@ -6,18 +6,16 @@ public class RepairHistoryHandler {
 
 	HistoryReviewFacade historyReviewFacade;
 
-	/**
-	 * 
-	 * @param historyReviewFacade
-	 */
 	public RepairHistoryHandler(HistoryReviewFacade historyReviewFacade) {
-		// TODO - implement RepairHistoryHandler.RepairHistoryHandler
-		throw new UnsupportedOperationException();
+		this.historyReviewFacade = historyReviewFacade;
 	}
 
 	public void handleRepairHistory() {
-		// TODO - implement RepairHistoryHandler.handleRepairHistory
-		throw new UnsupportedOperationException();
+		boolean isCompletedRepairsExists = historyReviewFacade.generateRepairHistory();
+		if(!isCompletedRepairsExists){
+			return;
+		}
+		historyReviewFacade.addReview();
 	}
 
 }

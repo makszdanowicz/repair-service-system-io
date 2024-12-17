@@ -1,8 +1,10 @@
 package com.pwr.presenter;
 
-import com.pwr.model.RequestDAO;
-import com.pwr.model.ReviewDAO;
+import com.pwr.model.*;
 import com.pwr.view.IClientView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryReviewFacade {
 
@@ -10,30 +12,49 @@ public class HistoryReviewFacade {
 	private ReviewDAO reviewDAO;
 	IClientView clientHistoryView;
 
-	/**
-	 * 
-	 * @param requestDAO
-	 * @param reviewDAO
-	 * @param clientHistoryView
-	 */
 	public HistoryReviewFacade(RequestDAO requestDAO, ReviewDAO reviewDAO, IClientView clientHistoryView) {
-		// TODO - implement HistoryReviewFacade.HistoryReviewFacade
-		throw new UnsupportedOperationException();
+		this.requestDAO = requestDAO;
+		this.reviewDAO = reviewDAO;
+		this.clientHistoryView = clientHistoryView;
 	}
 
-	public void generateRepairHistory() {
-		// TODO - implement HistoryReviewFacade.generateRepairHistory
-		throw new UnsupportedOperationException();
+	public boolean generateRepairHistory() {
+		List<Request> completedRequests = getCompletedRepairs(requestDAO.getAllRequests());
+		if(completedRequests.isEmpty()){
+			clientHistoryView.displayNotification("Brak ukonczonych napraw");
+			return false;
+		}
+		return true;
 	}
+
+	private List<Request> getCompletedRepairs(List<Request> allRequests){
+		List<Request> completedRequests = new ArrayList<>();
+		for(Request request : allRequests){
+			if(request.getStatus() == Status.COMPLETED){
+				completedRequests.add(request);
+			}
+		}
+		clientHistoryView.displayRepairs(completedRequests);
+		return completedRequests;
+	}
+
 
 	public void addReview() {
-		// TODO - implement HistoryReviewFacade.addReview
-		throw new UnsupportedOperationException();
+		boolean clientChoice = clientHistoryView.getClientChoice("Czy chcesz dodac opinie, wpisz 'tak' lub 'nie'");
+		if(!clientChoice){
+			return;
+		}
+		clientHistoryView.displayNotification("Wpisz id zgloszenia, do ktorego chcesz dodac opinie: ");
+		int repairID = clientHistoryView.getSelectedRepairId();
+		clientHistoryView.displayNotification("Jak oceniasz wykonana naprawe(wpisz liczbe od 1 do 5): ");
+		int rate = clientHistoryView.enterReviewRate();
+		clientHistoryView.displayNotification("Podziel sie opinia wykonanej naprawy(krotki tekst): ");
+		String description = clientHistoryView.enterReviewDescription();
+		/*
+		TO DO
+		Dodajemy do ReviewDAO nasza opnie
+		 */
 	}
 
-	public boolean isRepairExists() {
-		// TODO - implement HistoryReviewFacade.isRepairExists
-		throw new UnsupportedOperationException();
-	}
 
 }

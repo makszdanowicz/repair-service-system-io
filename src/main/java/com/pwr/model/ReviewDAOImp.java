@@ -3,10 +3,14 @@ package com.pwr.model;
 import com.pwr.model.Review;
 import com.pwr.model.ReviewDAO;
 
+import java.sql.Connection;
 import java.util.List;
 
 public class ReviewDAOImp implements ReviewDAO {
-
+	private Connection connection;
+	public ReviewDAOImp(Connection connection){
+		this.connection = connection;
+	}
 	/**
 	 * 
 	 * @param review

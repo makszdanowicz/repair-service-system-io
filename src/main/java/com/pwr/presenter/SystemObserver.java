@@ -8,23 +8,26 @@ import java.util.List;
 public class SystemObserver implements IObserver {
 
 	private List<Technician> monitoredTechnicians;
+	private int idOfAvailableTechnician;
 
-	/**
-	 * 
-	 * @param monitoredTechnicians
-	 */
 	public SystemObserver(List<Technician> monitoredTechnicians) {
-		// TODO - implement SystemObserver.SystemObserver
-		throw new UnsupportedOperationException();
+		this.monitoredTechnicians = monitoredTechnicians;
+		this.idOfAvailableTechnician = -1;
 	}
 
-	/**
-	 * 
-	 * @param availableTechnicianId
-	 */
+	@Override
+	public void setIdOfAvailableTechnician(int availableTechnicianId) {
+		this.idOfAvailableTechnician = availableTechnicianId;
+	}
+
+	@Override
+	public int getIdOfAvailableTechnician() {
+		return this.idOfAvailableTechnician;
+	}
+
 	public void update(int availableTechnicianId) {
-		// TODO - implement SystemObserver.update
-		throw new UnsupportedOperationException();
+		System.out.println("Pojawil sie wolny serwisant o id: " + availableTechnicianId);
+		setIdOfAvailableTechnician(availableTechnicianId);
 	}
 
 }

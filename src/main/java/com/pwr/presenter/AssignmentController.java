@@ -4,18 +4,20 @@ public class AssignmentController {
 
 	private AssignmentFacade assignmentFacade;
 
-	/**
-	 * 
-	 * @param assignmentFacade
-	 */
 	public AssignmentController(AssignmentFacade assignmentFacade) {
-		// TODO - implement AssignmentController.AssignmentController
-		throw new UnsupportedOperationException();
+		this.assignmentFacade = assignmentFacade;
 	}
 
 	public void handleRequestAssignment() {
-		// TODO - implement AssignmentController.handleRequestAssignment
-		throw new UnsupportedOperationException();
+		boolean isNewRepairExists = assignmentFacade.sendNewRequests();
+		if(!isNewRepairExists){
+			return;
+		}
+		int idOfRequest = assignmentFacade.getAdminChoice("Wpisz id zgloszenia z dostepnych do przydzielenia: \n");
+		assignmentFacade.assignTechnicianToRequest();
+		int idOfTechnician = assignmentFacade.getAdminChoice("Wpisz id serwisanta, ktorego chcesz przydzielic do " +
+															 "zgloszenia o id: " + idOfRequest);
+		// dalej idzie dodawanie do DAO TehcnicianDAO(Request) i Request(Technician) i zmiana statusu i wyswietlanie wiadomosci
 	}
 
 }

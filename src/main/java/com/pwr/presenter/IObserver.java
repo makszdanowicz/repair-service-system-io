@@ -1,11 +1,7 @@
 package com.pwr.presenter;
 
 public interface IObserver {
-
-	/**
-	 * 
-	 * @param availableTechnicianId
-	 */
+	void setIdOfAvailableTechnician(int availableTechnicianId);
+	int getIdOfAvailableTechnician();
 	void update(int availableTechnicianId);
-
 }

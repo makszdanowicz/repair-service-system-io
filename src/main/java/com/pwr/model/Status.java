@@ -1,27 +1,20 @@
 package com.pwr.model;
 
 public enum Status {
-	;
+	NEW("New request"),
+	PENDING("Pending request"),
+	ASSIGNED("Assigned request"),
+	IN_PROGRESS("In progress request"),
+	COMPLETED("Completed request"),
+	CLOSED("Closed request");
 
-	public Status NEW;
-	public Status PENDING;
-	public Status ASSIGNED;
-	public Status IN_PROGRESS;
-	public Status COMPLETED;
-	public Status CLOSED;
 	private String description;
 
-	/**
-	 * 
-	 * @param description
-	 */
 	Status(String description) {
-		// TODO - implement Status.Status
-		throw new UnsupportedOperationException();
+		this.description = description;
 	}
 
 	public String getDescription() {
 		return this.description;
 	}
-
 }
