@@ -4,18 +4,19 @@ public class AssignmentController {
 
 	private AssignmentFacade assignmentFacade;
 
-	/**
-	 * 
-	 * @param assignmentFacade
-	 */
 	public AssignmentController(AssignmentFacade assignmentFacade) {
-		// TODO - implement AssignmentController.AssignmentController
-		throw new UnsupportedOperationException();
+		this.assignmentFacade = assignmentFacade;
 	}
 
 	public void handleRequestAssignment() {
-		// TODO - implement AssignmentController.handleRequestAssignment
-		throw new UnsupportedOperationException();
+		boolean isNewRequestsExists = assignmentFacade.sendNewRequests();
+		if (!isNewRequestsExists){
+			return;
+		}
+		int idOfRequest = assignmentFacade.getAdminChoice("Wpisz id zgloszenia z dostepnych do przydzielenia: ");
+		assignmentFacade.assignTechnicianToRequest();
+		int idOfTechnician = assignmentFacade.getAdminChoice("Wpisz id serwisanta, ktorego chcesz przydzielic do zgloszenia: ");
 	}
+
 
 }

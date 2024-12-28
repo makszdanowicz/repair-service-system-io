@@ -21,9 +21,8 @@ public interface IAdminView {
 
 	void requestAssignmentInput();
 
-	int getSelectedRequestId();
+	int getSelectedId(String message);
 
-	int getSelectedTechnicianId();
 
 	/**
 	 * 

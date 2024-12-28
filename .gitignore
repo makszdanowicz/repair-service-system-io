@@ -3,6 +3,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### DataBase info ###
+/src/main/java/com/pwr/database/db-config.properties
+
 ### IntelliJ IDEA ###
 idea/
 .idea/modules.xml

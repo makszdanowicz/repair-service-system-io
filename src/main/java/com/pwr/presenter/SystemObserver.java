@@ -8,23 +8,24 @@ import java.util.List;
 public class SystemObserver implements IObserver {
 
 	private List<Technician> monitoredTechnicians;
+	private int idOfAvailableTechnician;
 
-	/**
-	 * 
-	 * @param monitoredTechnicians
-	 */
 	public SystemObserver(List<Technician> monitoredTechnicians) {
-		// TODO - implement SystemObserver.SystemObserver
-		throw new UnsupportedOperationException();
+		this.monitoredTechnicians = monitoredTechnicians;
+		for(Technician technician : monitoredTechnicians){
+			technician.setObserver(this);
+		}
 	}
 
-	/**
-	 * 
-	 * @param availableTechnicianId
-	 */
 	public void update(int availableTechnicianId) {
-		// TODO - implement SystemObserver.update
-		throw new UnsupportedOperationException();
+		System.out.println("Serwisant z id: " + availableTechnicianId + " jest teraz wolny");
+		this.idOfAvailableTechnician = availableTechnicianId;
+		for(Technician technician : monitoredTechnicians){
+			technician.deattachObserver();
+		}
 	}
 
+	public int getIdOfAvailableTechnician() {
+		return idOfAvailableTechnician;
+	}
 }

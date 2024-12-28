@@ -4,11 +4,12 @@ import com.pwr.model.Request;
 import com.pwr.model.Technician;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class AdminView implements IAdminView {
 
 	/**
-	 * 
+	 *
 	 * @param requests
 	 */
 	public void displayNewRequests(List<Request> requests) {
@@ -17,7 +18,7 @@ public class AdminView implements IAdminView {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param technicians
 	 */
 	public void displayAvailableTechnicians(List<Technician> technicians) {
@@ -30,18 +31,14 @@ public class AdminView implements IAdminView {
 		throw new UnsupportedOperationException();
 	}
 
-	public int getSelectedRequestId() {
-		// TODO - implement AdminView.getSelectedRequestId
-		throw new UnsupportedOperationException();
+	@Override
+	public int getSelectedId(String message) {
+		System.out.println(message);
+		Scanner scanner = new Scanner(System.in);
+		return scanner.nextInt();
 	}
-
-	public int getSelectedTechnicianId() {
-		// TODO - implement AdminView.getSelectedTechnicianId
-		throw new UnsupportedOperationException();
-	}
-
 	/**
-	 * 
+	 *
 	 * @param technicianId
 	 */
 	public void notifyTechnicianAvailable(int technicianId) {
