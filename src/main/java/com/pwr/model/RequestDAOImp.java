@@ -15,8 +15,7 @@ public class RequestDAOImp implements RequestDAO {
 	 * @param connection
 	 */
 	public RequestDAOImp(Connection connection) {
-		// TODO - implement RequestDAOImp.RequestDAOImp
-		throw new UnsupportedOperationException();
+		this.connection = connection;
 	}
 
 	/**
