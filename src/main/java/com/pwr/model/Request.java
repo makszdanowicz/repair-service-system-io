@@ -11,15 +11,20 @@ public class Request {
 	private Status status;
 	private Technician assignedTechnician;
 	private Date date;
+	public Request(int id, String issueDescription, String deviceModel, Client client, Status status, Technician assignedTechnician, Date date) {
+		this.id = id;
+		this.issueDescription = issueDescription;
+		this.deviceModel = deviceModel;
+		this.client = client;
+		this.status = status;
+		this.assignedTechnician = assignedTechnician;
+		this.date = date;
+	}
 
 	public int getId() {
 		return this.id;
 	}
 
-	/**
-	 * 
-	 * @param id
-	 */
 	public void setId(int id) {
 		this.id = id;
 	}

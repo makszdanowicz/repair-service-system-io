@@ -8,16 +8,21 @@ public class Client {
 	private String personalData;
 	private String address;
 	private String email;
-	private List<Request> requests;
+	//private List<Request> requests;
+	private List<Integer> requestsId;
+
+	public Client(int id, String personalData, String address, String email, List<Integer> requestsId) {
+		this.id = id;
+		this.personalData = personalData;
+		this.address = address;
+		this.email = email;
+		this.requestsId = requestsId;
+	}
 
 	public int getId() {
 		return this.id;
 	}
 
-	/**
-	 * 
-	 * @param id
-	 */
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -26,10 +31,6 @@ public class Client {
 		return this.personalData;
 	}
 
-	/**
-	 * 
-	 * @param personalData
-	 */
 	public void setPersonalData(String personalData) {
 		this.personalData = personalData;
 	}
@@ -38,10 +39,7 @@ public class Client {
 		return this.address;
 	}
 
-	/**
-	 * 
-	 * @param address
-	 */
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
@@ -50,24 +48,24 @@ public class Client {
 		return this.email;
 	}
 
-	/**
-	 * 
-	 * @param email
-	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public List<Request> getRequests() {
-		return this.requests;
+	public List<Integer> getRequestsId() {
+		return requestsId;
 	}
 
-	/**
-	 * 
-	 * @param requests
-	 */
-	public void setRequests(List<Request> requests) {
-		this.requests = requests;
+	public void setRequestsId(List<Integer> requestsId) {
+		this.requestsId = requestsId;
 	}
+
+	//	public List<Request> getRequests() {
+//		return this.requests;
+//	}
+//
+//	public void setRequests(List<Request> requests) {
+//		this.requests = requests;
+//	}
 
 }

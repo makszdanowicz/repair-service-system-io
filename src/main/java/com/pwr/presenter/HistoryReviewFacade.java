@@ -41,11 +41,7 @@ public class HistoryReviewFacade {
 		String descriptionOfRepair = clientHistoryView.enterReviewDescription();
 		Request request = requestDAO.getRequestById(repairID);
 		Review review = new Review(rate,descriptionOfRepair,request);
-		//ReviewDAO reviewDAO = new ReviewDAOImp();
-        /*
-		TO DO
-		Dodajemy do ReviewDAO nasza opinie
-		 */
+		reviewDAO.addReview(review);
 
 	}
 

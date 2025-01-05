@@ -13,6 +13,10 @@ public class Review {
 	private Date date;
 	private Request request;
 
+	public Review(){
+
+	}
+
 	public Review(int rate, String opinion, Request request){
 		this.rate = rate;
 		this.opinion = opinion;

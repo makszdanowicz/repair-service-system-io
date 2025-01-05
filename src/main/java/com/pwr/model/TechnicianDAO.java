@@ -23,6 +23,7 @@ public interface TechnicianDAO {
 	 * @param technicianId
 	 */
 	Technician getTechnicianById(int technicianId);
+	Technician getTechnicianByRequestId(int requestId);
 
 	List<Technician> getAllTechnicians();
 

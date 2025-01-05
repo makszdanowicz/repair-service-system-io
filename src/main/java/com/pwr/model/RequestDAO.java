@@ -25,11 +25,7 @@ public interface RequestDAO {
 	Request getRequestById(int requestId);
 
 	List<Request> getAllRequests();
-
-	/**
-	 * 
-	 * @param request
-	 */
+	List<Integer> getRequestsIdCreatedByThisClient(int clientId);
 	void deleteRequest(Request request);
 
 }

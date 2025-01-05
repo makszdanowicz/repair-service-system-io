@@ -4,46 +4,59 @@ import com.pwr.model.Client;
 import com.pwr.model.ClientDAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ClientDAOImp implements ClientDAO {
 
 	private Connection connection;
 
-	/**
-	 * 
-	 * @param connection
-	 */
 	public ClientDAOImp(Connection connection) {
-		// TODO - implement ClientDAOImp.ClientDAOImp
-		throw new UnsupportedOperationException();
+		this.connection = connection;
 	}
 
-	/**
-	 * 
-	 * @param client
-	 */
 	public void addClient(Client client) {
 		// TODO - implement ClientDAOImp.addClient
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param updatedClient
-	 */
 	public void updateClient(Client updatedClient) {
 		// TODO - implement ClientDAOImp.updateClient
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param clientId
-	 */
 	public Client getClientById(int clientId) {
-		// TODO - implement ClientDAOImp.getClientById
-		throw new UnsupportedOperationException();
+		Client client = null;
+		String getClientQuery = "SELECT user_id, personal_data, address, email FROM clients WHERE client_id = ?";
+		try{
+			// Przygotowanie zapytania
+			PreparedStatement preparedStatement = connection.prepareStatement(getClientQuery);
+			preparedStatement.setInt(1,clientId);
+
+			// Wykonanie zapytania i uzyskanie wynikow
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			// Sprawdzenie, czy istnieje wierz wynikowy
+			if(resultSet.next()){
+				// Pobranie danych z bazy
+				int id = resultSet.getInt("user_id");
+				String personalData = resultSet.getString("personal_data");
+				String address = resultSet.getString("address");
+				String email = resultSet.getString("email");
+
+				RequestDAO requestDAO = new RequestDAOImp(connection);
+				List<Integer> requestsId = requestDAO.getRequestsIdCreatedByThisClient(clientId);
+				client = new Client(id,personalData,address,email,requestsId);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Can't get Client from DataBase: " + e.getMessage());
+		}
+		return client;
 	}
 
 	public List<Client> getAllClients() {
@@ -51,13 +64,10 @@ public class ClientDAOImp implements ClientDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param client
-	 */
 	public void deleteClient(Client client) {
 		// TODO - implement ClientDAOImp.deleteClient
 		throw new UnsupportedOperationException();
 	}
+
 
 }
