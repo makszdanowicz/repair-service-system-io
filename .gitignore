@@ -4,7 +4,7 @@ target/
 !**/src/test/**/target/
 
 ### DataBase info ###
-/src/main/java/com/pwr/database/db-config.properties
+/src/main/resources/db-config.properties
 
 ### IntelliJ IDEA ###
 idea/

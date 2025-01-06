@@ -2,6 +2,7 @@ package com.pwr.database;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,13 +16,14 @@ public class DataBase {
     public DataBase() {
         try {
             Properties properties = new Properties();
-            FileInputStream input = new FileInputStream("database/db-config.properties");
+            InputStream input = getClass().getResourceAsStream("/db-config.properties");
             properties.load(input); // reads data from database config file
             dataBaseURL = properties.getProperty("db.url");
             dataBaseUserName = properties.getProperty("db.username");
             dataBasePassword = properties.getProperty("db.password");
 
             connection = DriverManager.getConnection(dataBaseURL,dataBaseUserName,dataBasePassword);
+            System.out.println("Successfully connected to db!");
         } catch (IOException e) {
             System.out.println("Problem with reading config file: " + e.getMessage());
         } catch (SQLException e) {

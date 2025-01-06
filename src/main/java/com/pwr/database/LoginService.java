@@ -1,4 +1,4 @@
-package com.pwr;
+package com.pwr.database;
 
 import com.pwr.database.User;
 
@@ -23,7 +23,7 @@ public class LoginService {
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
                 String role = resultSet.getString("role");
-                return new User(resultSet.getInt("id"),userName,role);
+                return new User(resultSet.getInt("user_id"),userName,role);
             }
             else {
                 throw new IllegalArgumentException("Invalid username or password");

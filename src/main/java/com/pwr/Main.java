@@ -1,6 +1,7 @@
 package com.pwr;
 
 import com.pwr.database.DataBase;
+import com.pwr.database.LoginService;
 import com.pwr.database.User;
 import com.pwr.model.*;
 import com.pwr.presenter.AssignmentController;
@@ -8,8 +9,6 @@ import com.pwr.presenter.AssignmentFacade;
 import com.pwr.presenter.HistoryReviewFacade;
 import com.pwr.presenter.RepairHistoryHandler;
 import com.pwr.view.*;
-
-import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
