@@ -35,10 +35,6 @@ public class Technician {
 		this.personalData = personalData;
 	}
 
-	public boolean getAvailability() {
-		return this.availability;
-	}
-
 	public void setAvailability(boolean availability) {
 		this.availability = availability;
 		if(availability){

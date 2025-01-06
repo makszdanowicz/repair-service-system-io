@@ -22,9 +22,21 @@ public class TechnicianDAOImp implements TechnicianDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public void updateTechnician(Technician updatedTechnician) {
-		// TODO - implement TechnicianDAOImp.updateTechnician
-		throw new UnsupportedOperationException();
+	public void updateTechnician(int idOfUpdatedTechnician, int idOfRequest) {
+		String updateTechnicianQuery = "UPDATE technicians SET availability = ?, request_id = ? WHERE user_id = ?";
+		try{
+			// Przygotowanie zapytania
+			PreparedStatement preparedStatement = connection.prepareStatement(updateTechnicianQuery);
+			preparedStatement.setBoolean(1,false);
+			preparedStatement.setInt(2, idOfRequest);
+			preparedStatement.setInt(3,idOfUpdatedTechnician);
+
+			// Wykonanie zapytania
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("Can't update a Technician with id(" + idOfUpdatedTechnician + "): " + e.getMessage());
+		}
 	}
 
 

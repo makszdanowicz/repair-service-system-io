@@ -42,7 +42,7 @@ public class AssignmentFacade {
 		return newRequests;
 	}
 
-	public int getAdminChoice(String message){
+	private int getAdminChoice(String message){
 		return adminView.getSelectedId(message);
 	}
 
@@ -56,27 +56,22 @@ public class AssignmentFacade {
 			availableTechnicians.add(technician);
 		}
 		adminView.displayAvailableTechnicians(availableTechnicians);
+		int idOfRequest = getAdminChoice("Wpisz id zgloszenia z dostepnych do przydzielenia: ");
+		requestDAO.updateRequest(idOfRequest,"PENDING");
+		int idOfTechnician = getAdminChoice("Wpisz id serwisanta, ktorego chcesz przydzielic do zgloszenia: ");
+
+		technicianDAO.updateTechnician(idOfTechnician,idOfRequest);
+		requestDAO.updateRequest(idOfRequest,"ASSIGNED");
 	}
 
 	private List<Technician> getAvailableTechnicians(List<Technician> allTechnicians) {
 		List<Technician> availableTechnicians = new ArrayList<>();
 		for(Technician technician : allTechnicians){
-			if(technician.getAvailability()){
+			if(technician.isAvailability()){
 				availableTechnicians.add(technician);
 			}
 		}
 		return availableTechnicians;
-	}
-
-
-	/**
-	 *
-	 * @param requestId
-	 * @param newStatus
-	 */
-	public void updateStatusOfRequest(int requestId, Status newStatus) {
-		// TODO - implement AssignmentFacade.updateStatusOfRequest
-		throw new UnsupportedOperationException();
 	}
 
 }

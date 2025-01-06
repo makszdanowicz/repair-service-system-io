@@ -1,5 +1,7 @@
 package com.pwr.presenter;
 
+import com.pwr.model.Technician;
+
 public class AssignmentController {
 
 	private AssignmentFacade assignmentFacade;
@@ -13,9 +15,10 @@ public class AssignmentController {
 		if (!isNewRequestsExists){
 			return;
 		}
-		int idOfRequest = assignmentFacade.getAdminChoice("Wpisz id zgloszenia z dostepnych do przydzielenia: ");
 		assignmentFacade.assignTechnicianToRequest();
-		int idOfTechnician = assignmentFacade.getAdminChoice("Wpisz id serwisanta, ktorego chcesz przydzielic do zgloszenia: ");
+//		int idOfRequest = assignmentFacade.getAdminChoice("Wpisz id zgloszenia z dostepnych do przydzielenia: ");
+//		assignmentFacade.assignTechnicianToRequest();
+//		int idOfTechnician = assignmentFacade.getAdminChoice("Wpisz id serwisanta, ktorego chcesz przydzielic do zgloszenia: ");
 	}
 
 

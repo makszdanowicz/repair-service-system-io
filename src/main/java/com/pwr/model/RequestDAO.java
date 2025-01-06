@@ -12,11 +12,7 @@ public interface RequestDAO {
 	 */
 	void addRequest(Request request);
 
-	/**
-	 * 
-	 * @param updatedRequest
-	 */
-	void updateRequest(Request updatedRequest);
+	void updateRequest(int updatedRequestId, String status);
 
 	/**
 	 * 

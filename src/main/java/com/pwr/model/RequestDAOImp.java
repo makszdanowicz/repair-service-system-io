@@ -24,9 +24,19 @@ public class RequestDAOImp implements RequestDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public void updateRequest(Request updatedRequest) {
-		// TODO - implement RequestDAOImp.updateRequest
-		throw new UnsupportedOperationException();
+	public void updateRequest(int updatedRequestId, String status) {
+		String updateRequestQuery = "UPDATE requests SET status = ? WHERE request_id = ?";
+		try{
+			// Przygotowanie zapytania
+			PreparedStatement preparedStatement = connection.prepareStatement(updateRequestQuery);
+			preparedStatement.setString(1,status);
+			preparedStatement.setInt(2,updatedRequestId);
+
+			// Wykonanie zapytania
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Can't update a Request(ID:" + updatedRequestId + "): " + e.getMessage());
+		}
 	}
 
 	public Request getRequestById(int requestId) {
