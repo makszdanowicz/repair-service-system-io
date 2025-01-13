@@ -31,7 +31,7 @@ public class ClientDAOImp implements ClientDAO {
 
 	public Client getClientById(int clientId) {
 		Client client = null;
-		String getClientQuery = "SELECT user_id, personal_data, address, email FROM clients WHERE client_id = ?";
+		String getClientQuery = "SELECT user_id, personal_data, address, email FROM clients WHERE user_id = ?";
 		try{
 			// Przygotowanie zapytania
 			PreparedStatement preparedStatement = connection.prepareStatement(getClientQuery);

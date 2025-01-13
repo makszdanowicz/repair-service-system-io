@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TechnicianDAOImp implements TechnicianDAO {
@@ -42,13 +43,16 @@ public class TechnicianDAOImp implements TechnicianDAO {
 
 	public Technician getTechnicianById(int technicianId) {
 		Technician technician = null;
-		String getTechnicianQuery = "SELECT user_id, personal_data, availability, request_id WHERE user_id = ?";
+		String getTechnicianQuery = "SELECT user_id, personal_data, availability, request_id FROM technicians WHERE user_id = ?";
 		try{
+			// Przygotowanie zapytania
 			PreparedStatement preparedStatement = connection.prepareStatement(getTechnicianQuery);
 			preparedStatement.setInt(1,technicianId);
 
+			// Wykonanie zapytania
 			ResultSet resultSet = preparedStatement.executeQuery();
 
+			// Jezeli istnieje wierz, utworzenie obiektu Technician
 			if(resultSet.next()){
 				String personalData = resultSet.getString("personal_data");
 				boolean availability = resultSet.getBoolean("availability");
@@ -65,7 +69,7 @@ public class TechnicianDAOImp implements TechnicianDAO {
 	@Override
 	public Technician getTechnicianByRequestId(int requestId) {
 		Technician technician = null;
-		String getTechnicianQuery = "SELECT user_id, personal_data, availability, request_id WHERE request_id = ?";
+		String getTechnicianQuery = "SELECT user_id, personal_data, availability, request_id FROM technicians WHERE request_id = ?";
 		try{
 			PreparedStatement preparedStatement = connection.prepareStatement(getTechnicianQuery);
 			preparedStatement.setInt(1,requestId);
@@ -86,8 +90,24 @@ public class TechnicianDAOImp implements TechnicianDAO {
 	}
 
 	public List<Technician> getAllTechnicians() {
-		// TODO - implement TechnicianDAOImp.getAllTechnicians
-		throw new UnsupportedOperationException();
+		List<Technician> allTechnicians = new ArrayList<>();
+		String getAllTechniciansQuery = "SELECT * FROM technicians";
+		try{
+			PreparedStatement preparedStatement = connection.prepareStatement(getAllTechniciansQuery);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				int id = resultSet.getInt("user_id");
+				String personalData = resultSet.getString("personal_data");
+				boolean availability = resultSet.getBoolean("availability");
+				int requestId = resultSet.getInt("request_id");
+
+				Technician technician = new Technician(id,personalData,availability,requestId);
+				allTechnicians.add(technician);
+			}
+		} catch (SQLException e) {
+			System.out.println("Can't get all Technicians from DataBase: " + e.getMessage());
+		}
+		return allTechnicians;
 	}
 
 	public void deleteTechnician(Technician technician) {

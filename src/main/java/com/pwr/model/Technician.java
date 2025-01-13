@@ -8,7 +8,6 @@ public class Technician {
 	private int id;
 	private String personalData;
 	private boolean availability;
-	//private Request request;
 	private int requestId;
 	private IObserver systemObserver;
 
@@ -55,14 +54,6 @@ public class Technician {
 	public void setRequestId(int requestId) {
 		this.requestId = requestId;
 	}
-
-	//	public Request getRequest() {
-//		return this.request;
-//	}
-//
-//	public void setRequest(Request request) {
-//		this.request = request;
-//	}
 
 	public void notifyObserver() {
 		systemObserver.update(this.id);

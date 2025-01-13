@@ -33,10 +33,6 @@ public class Request {
 		return this.issueDescription;
 	}
 
-	/**
-	 * 
-	 * @param issueDescription
-	 */
 	public void setIssueDescription(String issueDescription) {
 		this.issueDescription = issueDescription;
 	}
@@ -45,10 +41,6 @@ public class Request {
 		return this.deviceModel;
 	}
 
-	/**
-	 * 
-	 * @param deviceModel
-	 */
 	public void setDeviceModel(String deviceModel) {
 		this.deviceModel = deviceModel;
 	}
@@ -57,10 +49,6 @@ public class Request {
 		return this.status;
 	}
 
-	/**
-	 * 
-	 * @param status
-	 */
 	public void setStatus(Status status) {
 		this.status = status;
 	}
@@ -69,10 +57,6 @@ public class Request {
 		return this.client;
 	}
 
-	/**
-	 * 
-	 * @param client
-	 */
 	public void setClient(Client client) {
 		this.client = client;
 	}
@@ -81,10 +65,6 @@ public class Request {
 		return this.assignedTechnician;
 	}
 
-	/**
-	 * 
-	 * @param assignedTechnician
-	 */
 	public void setAssignedTechnician(Technician assignedTechnician) {
 		this.assignedTechnician = assignedTechnician;
 	}
@@ -93,10 +73,6 @@ public class Request {
 		return this.date;
 	}
 
-	/**
-	 * 
-	 * @param date
-	 */
 	public void setDate(Date date) {
 		this.date = date;
 	}

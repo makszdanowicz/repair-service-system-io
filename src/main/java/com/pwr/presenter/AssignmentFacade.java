@@ -27,7 +27,8 @@ public class AssignmentFacade {
 	}
 
 	public boolean sendNewRequests(){
-		List<Request> newRequests = getNewRequests(requestDAO.getAllRequests());
+		List<Request> allRequests = requestDAO.getAllRequests();
+		List<Request> newRequests = getNewRequests(allRequests);
 		adminView.displayNewRequests(newRequests);
 		return !newRequests.isEmpty();
 	}
@@ -56,11 +57,12 @@ public class AssignmentFacade {
 			availableTechnicians.add(technician);
 		}
 		adminView.displayAvailableTechnicians(availableTechnicians);
-		int idOfRequest = getAdminChoice("Wpisz id zgloszenia z dostepnych do przydzielenia: ");
+		int idOfRequest = getAdminChoice("Enter the id of request: ");
 		requestDAO.updateRequest(idOfRequest,"PENDING");
-		int idOfTechnician = getAdminChoice("Wpisz id serwisanta, ktorego chcesz przydzielic do zgloszenia: ");
 
+		int idOfTechnician = getAdminChoice("Enter the id of technician: ");
 		technicianDAO.updateTechnician(idOfTechnician,idOfRequest);
+
 		requestDAO.updateRequest(idOfRequest,"ASSIGNED");
 	}
 

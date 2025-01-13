@@ -22,22 +22,24 @@ public class HistoryReviewFacade {
 		List<Request> allRequests = requestDAO.getAllRequests();
 		List<Request> completedRepairs = getCompletedRepairs(allRequests);
 		if(completedRepairs.isEmpty()){
-			clientHistoryView.displayNotification("Brak ukonczonych napraw");
+			clientHistoryView.displayNotification("There are no existing finished repairs");
 			return false;
 		}
+		clientHistoryView.displayRepairs(completedRepairs);
 		return true;
 	}
 
 	public void addReviewAboutRepair() {
-		boolean clientChoice = clientHistoryView.getClientChoice("Czy chcesz dodac opinie, wpisz 'tak' lub 'nie'");
+		String message = "Would you like to add review about your finished repair?Type 'yes' or 'no'";
+		boolean clientChoice = clientHistoryView.getClientChoice(message);
 		if(!clientChoice){
 			return;
 		}
-		clientHistoryView.displayNotification("Wpisz id zgloszenia, do ktorego chcesz dodac opnie: ");
+		clientHistoryView.displayNotification("Enter request id: ");
 		int repairID = clientHistoryView.getSelectedRepairId();
-		clientHistoryView.displayNotification("Jak oceniasz wykonana naprawe(wpisz liczbe od 1 do 5): ");
+		clientHistoryView.displayNotification("Enter yor rating(1 to 5): ");
 		int rate = clientHistoryView.enterReviewRate();
-		clientHistoryView.displayNotification("Podziel sie opinia wykonanej naprawy(krotki tekst): ");
+		clientHistoryView.displayNotification("Share your opinion: ");
 		String descriptionOfRepair = clientHistoryView.enterReviewDescription();
 		Request request = requestDAO.getRequestById(repairID);
 		Review review = new Review(rate,descriptionOfRepair,request);

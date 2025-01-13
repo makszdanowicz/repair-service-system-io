@@ -63,9 +63,9 @@ public class ClientView implements IClientView {
 		System.out.println(message);
 		Scanner scanner = new Scanner(System.in);
 		String clientChoice = scanner.next();
-		if(clientChoice.equals("tak")){
+		if(clientChoice.equals("yes")){
 			return true;
-		} else if(clientChoice.equals("nie")){
+		} else if(clientChoice.equals("no")){
 			return false;
 		}
 		return false;

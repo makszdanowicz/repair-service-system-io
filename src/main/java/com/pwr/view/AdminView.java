@@ -11,6 +11,10 @@ import java.util.Scanner;
 public class AdminView implements IAdminView {
 
 	public void displayNewRequests(List<Request> requests) {
+		if(requests.isEmpty()){
+			System.out.println("No existing new requests");
+			return;
+		}
 		// Sortowanie zgloszen wedlug daty(najstarsze na poczatku)
 		requests.sort(Comparator.comparing(Request::getDate));
 		for(Request request : requests){
@@ -36,7 +40,7 @@ public class AdminView implements IAdminView {
 			if(technician != null){
 				output.append("Technician ID: ").append(technician.getId()).append("\n");
 			}else {
-				output.append("Technician: Not assigned\n");
+				output.append("Technician availability: Not assigned\n");
 			}
 
 			// Data zgloszenia
