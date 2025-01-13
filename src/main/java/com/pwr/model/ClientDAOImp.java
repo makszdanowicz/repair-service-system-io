@@ -30,33 +30,40 @@ public class ClientDAOImp implements ClientDAO {
 	}
 
 	public Client getClientById(int clientId) {
-		Client client = null;
 		String getClientQuery = "SELECT user_id, personal_data, address, email FROM clients WHERE user_id = ?";
-		try{
-			// Przygotowanie zapytania
-			PreparedStatement preparedStatement = connection.prepareStatement(getClientQuery);
-			preparedStatement.setInt(1,clientId);
-
+		// Przygotowanie zapytania
+		try(PreparedStatement preparedStatement = connection.prepareStatement(getClientQuery)) {
+			preparedStatement.setInt(1, clientId);
 			// Wykonanie zapytania i uzyskanie wynikow
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			// Sprawdzenie, czy istnieje wierz wynikowy
-			if(resultSet.next()){
-				// Pobranie danych z bazy
-				int id = resultSet.getInt("user_id");
-				String personalData = resultSet.getString("personal_data");
-				String address = resultSet.getString("address");
-				String email = resultSet.getString("email");
-
-				RequestDAO requestDAO = new RequestDAOImp(connection);
-				List<Integer> requestsId = requestDAO.getRequestsIdCreatedByThisClient(clientId);
-				client = new Client(id,personalData,address,email,requestsId);
+			try(ResultSet resultSet = preparedStatement.executeQuery()) {
+				// Sprawdzenie, czy istnieje wierz wynikowy
+				if (resultSet.next()) {
+					// Zwracanie klienta
+					return mapToClient(resultSet, clientId);
+				}
 			}
-
 		} catch (SQLException e) {
 			System.out.println("Can't get Client from DataBase: " + e.getMessage());
 		}
-		return client;
+		return null;
+	}
+
+	private Client mapToClient(ResultSet resultSet, int clientId){
+		try {
+			// Odczytanie danych z bazy
+			String personalData = resultSet.getString("personal_data");
+			String address = resultSet.getString("address");
+			String email = resultSet.getString("email");
+
+			RequestDAO requestDAO = new RequestDAOImp(connection);
+			List<Integer> requestsId = requestDAO.getRequestsIdCreatedByThisClient(clientId);
+
+			return new Client(clientId, personalData, address, email, requestsId);
+
+		} catch (SQLException e) {
+			System.out.println("Can't read Client data from db: " + e.getMessage());
+		}
+		return null;
 	}
 
 	public List<Client> getAllClients() {

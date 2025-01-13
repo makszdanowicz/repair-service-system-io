@@ -25,10 +25,9 @@ public class RequestDAOImp implements RequestDAO {
 	}
 
 	public void updateRequest(int updatedRequestId, String status) {
+		// Przygotowanie zapytania
 		String updateRequestQuery = "UPDATE requests SET status = ? WHERE request_id = ?";
-		try{
-			// Przygotowanie zapytania
-			PreparedStatement preparedStatement = connection.prepareStatement(updateRequestQuery);
+		try(PreparedStatement preparedStatement = connection.prepareStatement(updateRequestQuery)){
 			preparedStatement.setString(1,status);
 			preparedStatement.setInt(2,updatedRequestId);
 
@@ -40,77 +39,35 @@ public class RequestDAOImp implements RequestDAO {
 	}
 
 	public Request getRequestById(int requestId) {
-		Request request = null;
+		// Przygotowanie zapytania
 		String getRequestQuery = "SELECT request_id, issue_description, device_model, client_id, status, date FROM requests WHERE request_id = ?";
-		try{
-			// Przygotowanie zapytania
-			PreparedStatement preparedStatement = connection.prepareStatement(getRequestQuery);
+		try(PreparedStatement preparedStatement = connection.prepareStatement(getRequestQuery)){
 			preparedStatement.setInt(1,requestId);
-
 			// Wykonanie zapytania i uzyskanie wynikow
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			// Sprawdzenie, czy istnieje wierz wynikowy
-			if(resultSet.next()){
-				// Pobranie danych z bazy
-				int id = resultSet.getInt("request_id");
-				String issueDescription = resultSet.getString("issue_description");
-				String deviceModel = resultSet.getString("device_model");
-				int clientId = resultSet.getInt("client_id");
-
-				// Pobranie obiektu Client z innego DAO
-				ClientDAOImp clientDAOImp = new ClientDAOImp(connection);
-				Client client = clientDAOImp.getClientById(clientId);
-
-				// Konwersja statusu na enum
-				String statusString = resultSet.getString("status");
-				Status status = Status.valueOf(statusString);
-
-				// Pobranie obiektu Technician z innego DAO
-				TechnicianDAOImp technicianDAOImp = new TechnicianDAOImp(connection);
-				Technician assignedTechnician = technicianDAOImp.getTechnicianByRequestId(requestId);
-
-				Date date = resultSet.getTimestamp("date");
-				request = new Request(id,issueDescription,deviceModel,client,status,assignedTechnician,date);
+			try(ResultSet resultSet = preparedStatement.executeQuery()){
+				// Sprawdzenie, czy istnieje wierz wynikowy
+				if(resultSet.next()){
+					return mapToRequest(resultSet);
+				}
 			}
 		} catch (SQLException e) {
 			System.out.println("Can't get Request from DataBase: " + e.getMessage());
 		}
-		return request;
+		return null;
 	}
 
 	public List<Request> getAllRequests() {
 		List<Request> requests = new ArrayList<>();
+		// Przygotowanie zapytania
 		String getAllRequestsQuery = "SELECT * FROM requests;";
-		try{
-			// Przygotowanie zapytania
-			PreparedStatement preparedStatement = connection.prepareStatement(getAllRequestsQuery);
-
+		try(PreparedStatement preparedStatement = connection.prepareStatement(getAllRequestsQuery)) {
 			// Wykonanie zapytania
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			// Iteracja przez wyniki i tworzenie obiektow Request
-			while(resultSet.next()){
-				int requestId = resultSet.getInt("request_id");
-				String issueDescription = resultSet.getString("issue_description");
-				String deviceModel = resultSet.getString("device_model");
-				int clientId = resultSet.getInt("client_id");
-
-				// Pobranie obiektu Client z innego DAO
-				ClientDAO clientDAO = new ClientDAOImp(connection);
-				Client client = clientDAO.getClientById(clientId);
-
-				// Konwersja statusu na enum
-				String stringStatus = resultSet.getString("status");
-				Status status = Status.valueOf(stringStatus);
-
-				// Pobranie obiektu Technician z innego DAO
-				TechnicianDAO technicianDAO = new TechnicianDAOImp(connection);
-				Technician assignedTechnician = technicianDAO.getTechnicianByRequestId(requestId);
-
-				Date date = resultSet.getTimestamp("date");
-				Request request = new Request(requestId,issueDescription,deviceModel,client,status,assignedTechnician,date);
-				requests.add(request);
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				// Iteracja przez wyniki i tworzenie obiektow Request
+				while (resultSet.next()) {
+					Request request = mapToRequest(resultSet);
+					requests.add(request);
+				}
 			}
 		} catch (SQLException e) {
 			System.out.println("Can't get all Requests from DataBase: " + e.getMessage());
@@ -118,11 +75,39 @@ public class RequestDAOImp implements RequestDAO {
 		return requests;
 	}
 
+	private Request mapToRequest(ResultSet resultSet){
+		try {
+			// Pobranie danych z bazy
+			int id = resultSet.getInt("request_id");
+			String issueDescription = resultSet.getString("issue_description");
+			String deviceModel = resultSet.getString("device_model");
+			int clientId = resultSet.getInt("client_id");
+			Date date = resultSet.getTimestamp("date");
+
+			// Pobranie obiektu Client z innego DAO
+			ClientDAOImp clientDAOImp = new ClientDAOImp(connection);
+			Client client = clientDAOImp.getClientById(clientId);
+
+			// Konwersja statusu na enum
+			String statusString = resultSet.getString("status");
+			Status status = Status.valueOf(statusString);
+
+			// Pobranie obiektu Technician z innego DAO
+			TechnicianDAOImp technicianDAOImp = new TechnicianDAOImp(connection);
+			Technician assignedTechnician = technicianDAOImp.getTechnicianByRequestId(id);
+
+			return new Request(id,issueDescription,deviceModel,client,status,assignedTechnician,date);
+
+		} catch (SQLException e) {
+			System.out.println("Can't map result set to Request: " + e.getMessage());
+		}
+		return null;
+	}
+
 	public List<Integer> getRequestsIdCreatedByThisClient(int clientId){
 		List<Integer> requestsIds = new ArrayList<>();
 		String getAllRequestsIdFromThisClientQuery = "SELECT request_id FROM requests WHERE client_id = ?";
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(getAllRequestsIdFromThisClientQuery);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(getAllRequestsIdFromThisClientQuery)){
 			preparedStatement.setInt(1,clientId);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
