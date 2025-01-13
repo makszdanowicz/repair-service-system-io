@@ -1,8 +1,10 @@
 package com.pwr.presenter;
 
-import com.pwr.model.RequestDAO;
-import com.pwr.model.ReviewDAO;
+import com.pwr.model.*;
 import com.pwr.view.IClientView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryReviewFacade {
 
@@ -10,30 +12,50 @@ public class HistoryReviewFacade {
 	private ReviewDAO reviewDAO;
 	IClientView clientHistoryView;
 
-	/**
-	 * 
-	 * @param requestDAO
-	 * @param reviewDAO
-	 * @param clientHistoryView
-	 */
 	public HistoryReviewFacade(RequestDAO requestDAO, ReviewDAO reviewDAO, IClientView clientHistoryView) {
-		// TODO - implement HistoryReviewFacade.HistoryReviewFacade
-		throw new UnsupportedOperationException();
+		this.requestDAO = requestDAO;
+		this.reviewDAO = reviewDAO;
+		this.clientHistoryView = clientHistoryView;
 	}
 
-	public void generateRepairHistory() {
-		// TODO - implement HistoryReviewFacade.generateRepairHistory
-		throw new UnsupportedOperationException();
+	public boolean generateRepairHistory() {
+		List<Request> allRequests = requestDAO.getAllRequests();
+		List<Request> completedRepairs = getCompletedRepairs(allRequests);
+		if(completedRepairs.isEmpty()){
+			clientHistoryView.displayNotification("There are no existing finished repairs");
+			return false;
+		}
+		clientHistoryView.displayRepairs(completedRepairs);
+		return true;
 	}
 
-	public void addReview() {
-		// TODO - implement HistoryReviewFacade.addReview
-		throw new UnsupportedOperationException();
+	public void addReviewAboutRepair() {
+		String message = "Would you like to add review about your finished repair?Type 'yes' or 'no'";
+		boolean clientChoice = clientHistoryView.getClientChoice(message);
+		if(!clientChoice){
+			return;
+		}
+		clientHistoryView.displayNotification("Enter request id: ");
+		int repairID = clientHistoryView.getSelectedRepairId();
+		clientHistoryView.displayNotification("Enter yor rating(1 to 5): ");
+		int rate = clientHistoryView.enterReviewRate();
+		clientHistoryView.displayNotification("Share your opinion: ");
+		String descriptionOfRepair = clientHistoryView.enterReviewDescription();
+		Request request = requestDAO.getRequestById(repairID);
+		Review review = new Review(rate,descriptionOfRepair,request);
+		reviewDAO.addReview(review);
+
 	}
 
-	public boolean isRepairExists() {
-		// TODO - implement HistoryReviewFacade.isRepairExists
-		throw new UnsupportedOperationException();
+	private List<Request> getCompletedRepairs(List<Request> requests){
+		List<Request> completedRepairs = new ArrayList<>();
+		for(Request request : requests){
+			if(request.getStatus() == Status.COMPLETED){
+				completedRepairs.add(request);
+			}
+		}
+		clientHistoryView.displayRepairs(completedRepairs);
+		return completedRepairs;
 	}
 
 }

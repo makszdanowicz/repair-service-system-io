@@ -5,6 +5,7 @@ import com.pwr.view.IAdminView;
 import com.pwr.view.IClientView;
 import com.pwr.view.ITechnicianView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AssignmentFacade {
@@ -16,43 +17,63 @@ public class AssignmentFacade {
 	private IClientView clientView;
 	private ITechnicianView technicianView;
 
-	/**
-	 * 
-	 * @param requestDAO
-	 * @param technicianDAO
-	 * @param clientDAO
-	 * @param adminView
-	 * @param clientView
-	 * @param technicianView
-	 */
 	public AssignmentFacade(RequestDAO requestDAO, TechnicianDAO technicianDAO, ClientDAO clientDAO, IAdminView adminView, IClientView clientView, ITechnicianView technicianView) {
-		// TODO - implement AssignmentFacade.AssignmentFacade
-		throw new UnsupportedOperationException();
+		this.requestDAO = requestDAO;
+		this.technicianDAO = technicianDAO;
+		this.clientDAO = clientDAO;
+		this.adminView = adminView;
+		this.clientView = clientView;
+		this.technicianView = technicianView;
+	}
+
+	public boolean sendNewRequests(){
+		List<Request> allRequests = requestDAO.getAllRequests();
+		List<Request> newRequests = getNewRequests(allRequests);
+		adminView.displayNewRequests(newRequests);
+		return !newRequests.isEmpty();
+	}
+
+	public List<Request> getNewRequests(List<Request> allRequests){
+		List<Request> newRequests = new ArrayList<>();
+		for(Request request : allRequests){
+			if(request.getStatus() == Status.NEW){
+				newRequests.add(request);
+			}
+		}
+		return newRequests;
+	}
+
+	private int getAdminChoice(String message){
+		return adminView.getSelectedId(message);
 	}
 
 	public void assignTechnicianToRequest() {
-		// TODO - implement AssignmentFacade.assignTechnicianToRequest
-		throw new UnsupportedOperationException();
+		List<Technician> technicians = technicianDAO.getAllTechnicians();
+		List<Technician> availableTechnicians = getAvailableTechnicians(technicians);
+		if(availableTechnicians.isEmpty()){
+			SystemObserver systemObserver = new SystemObserver(technicians);
+			int idOfAvailableTechnician = systemObserver.getIdOfAvailableTechnician();
+			Technician technician = technicianDAO.getTechnicianById(idOfAvailableTechnician);
+			availableTechnicians.add(technician);
+		}
+		adminView.displayAvailableTechnicians(availableTechnicians);
+		int idOfRequest = getAdminChoice("Enter the id of request: ");
+		requestDAO.updateRequest(idOfRequest,"PENDING");
+
+		int idOfTechnician = getAdminChoice("Enter the id of technician: ");
+		technicianDAO.updateTechnician(idOfTechnician,idOfRequest);
+
+		requestDAO.updateRequest(idOfRequest,"ASSIGNED");
 	}
 
-	private List<Technician> getAvailableTechnicians() {
-		// TODO - implement AssignmentFacade.getAvailableTechnicians
-		throw new UnsupportedOperationException();
-	}
-
-	private List<Request> getNewRequests() {
-		// TODO - implement AssignmentFacade.getNewRequests
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param requestId
-	 * @param newStatus
-	 */
-	public void updateStatusOfRequest(int requestId, Status newStatus) {
-		// TODO - implement AssignmentFacade.updateStatusOfRequest
-		throw new UnsupportedOperationException();
+	private List<Technician> getAvailableTechnicians(List<Technician> allTechnicians) {
+		List<Technician> availableTechnicians = new ArrayList<>();
+		for(Technician technician : allTechnicians){
+			if(technician.isAvailability()){
+				availableTechnicians.add(technician);
+			}
+		}
+		return availableTechnicians;
 	}
 
 }

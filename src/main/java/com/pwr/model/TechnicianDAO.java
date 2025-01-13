@@ -12,17 +12,15 @@ public interface TechnicianDAO {
 	 */
 	void addTechnician(Technician technician);
 
-	/**
-	 * 
-	 * @param updatedTechnician
-	 */
-	void updateTechnician(Technician updatedTechnician);
+
+	void updateTechnician(int idOfUpdatedTechnician, int idOfRequest);
 
 	/**
 	 * 
 	 * @param technicianId
 	 */
 	Technician getTechnicianById(int technicianId);
+	Technician getTechnicianByRequestId(int requestId);
 
 	List<Technician> getAllTechnicians();
 

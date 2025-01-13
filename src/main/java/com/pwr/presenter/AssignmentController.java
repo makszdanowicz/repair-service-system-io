@@ -1,21 +1,22 @@
 package com.pwr.presenter;
 
+import com.pwr.model.Technician;
+
 public class AssignmentController {
 
 	private AssignmentFacade assignmentFacade;
 
-	/**
-	 * 
-	 * @param assignmentFacade
-	 */
 	public AssignmentController(AssignmentFacade assignmentFacade) {
-		// TODO - implement AssignmentController.AssignmentController
-		throw new UnsupportedOperationException();
+		this.assignmentFacade = assignmentFacade;
 	}
 
 	public void handleRequestAssignment() {
-		// TODO - implement AssignmentController.handleRequestAssignment
-		throw new UnsupportedOperationException();
+		boolean isNewRequestsExists = assignmentFacade.sendNewRequests();
+		if (!isNewRequestsExists){
+			return;
+		}
+		assignmentFacade.assignTechnicianToRequest();
 	}
+
 
 }

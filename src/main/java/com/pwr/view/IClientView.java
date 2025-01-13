@@ -20,6 +20,8 @@ public interface IClientView {
 
 	int getSelectedRepairId();
 
+	public boolean getClientChoice(String message);
+
 	String enterReviewDescription();
 
 	int enterReviewRate();
