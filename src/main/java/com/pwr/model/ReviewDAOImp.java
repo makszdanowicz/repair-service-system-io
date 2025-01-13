@@ -92,10 +92,22 @@ public class ReviewDAOImp implements ReviewDAO {
 		return null;
 	}
 
-
-		public void deleteReview(Review review) {
-			// TODO - implement ReviewDAOImp.deleteReview
-			throw new UnsupportedOperationException();
+	public boolean isReviewExist(int requestId){
+		String isReviewExistQuery = "SELECT review_id FROM reviews WHERE request_id = ?";
+		try(PreparedStatement preparedStatement = connection.prepareStatement(isReviewExistQuery)){
+			preparedStatement.setInt(1,requestId);
+			ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+			throw new RuntimeException(e);
+			//System.out.println("Can't check if review exist in DataBase: " + e.getMessage());
 		}
+	}
+
+
+	public void deleteReview(Review review) {
+		// TODO - implement ReviewDAOImp.deleteReview
+		throw new UnsupportedOperationException();
+	}
 
 }

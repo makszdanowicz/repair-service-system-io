@@ -64,6 +64,8 @@ public class AssignmentFacade {
 		technicianDAO.updateTechnician(idOfTechnician,idOfRequest);
 
 		requestDAO.updateRequest(idOfRequest,"ASSIGNED");
+
+		adminView.displayNotification("Request with id " + idOfRequest + " successfully assigned to the technician " + idOfTechnician);
 	}
 
 	private List<Technician> getAvailableTechnicians(List<Technician> allTechnicians) {

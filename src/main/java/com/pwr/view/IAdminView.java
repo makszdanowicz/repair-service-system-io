@@ -23,6 +23,8 @@ public interface IAdminView {
 
 	int getSelectedId(String message);
 
+	void displayNotification(String message);
+
 
 	/**
 	 * 

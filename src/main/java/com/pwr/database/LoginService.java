@@ -11,9 +11,9 @@ import java.util.Scanner;
 public class LoginService {
     public static User login(Connection connection){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Wpisz swoja nazwe uzytkownika: ");
+        System.out.println("Enter your username: ");
         String userName = scanner.nextLine();
-        System.out.println("Wpisz swoje haslo: ");
+        System.out.println("Enter your password: ");
         String password = scanner.nextLine();
 
         String query = "SELECT * FROM Users WHERE username = ? AND password = ?";

@@ -50,11 +50,10 @@ public class HistoryReviewFacade {
 	private List<Request> getCompletedRepairs(List<Request> requests){
 		List<Request> completedRepairs = new ArrayList<>();
 		for(Request request : requests){
-			if(request.getStatus() == Status.COMPLETED){
+			if(request.getStatus() == Status.COMPLETED && !reviewDAO.isReviewExist(request.getId())){
 				completedRepairs.add(request);
 			}
 		}
-		clientHistoryView.displayRepairs(completedRepairs);
 		return completedRepairs;
 	}
 

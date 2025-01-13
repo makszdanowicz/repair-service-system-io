@@ -25,6 +25,7 @@ public interface ReviewDAO {
 	Review getReviewById(int reviewId);
 
 	List<Review> getAllReviews();
+	boolean isReviewExist(int requestId);
 
 	/**
 	 * 

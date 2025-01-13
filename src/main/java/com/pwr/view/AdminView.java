@@ -83,4 +83,8 @@ public class AdminView implements IAdminView {
 		throw new UnsupportedOperationException();
 	}
 
+	public void displayNotification(String message) {
+		System.out.println(message);
+	}
+
 }
