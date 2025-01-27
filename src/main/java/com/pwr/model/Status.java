@@ -18,4 +18,13 @@ public enum Status {
 		return this.description;
 	}
 
+	public static Status convertDescription(String description){
+		for(Status status : Status.values()){
+			if(status.getDescription().equalsIgnoreCase(description)){
+				return status;
+			}
+		}
+		throw new IllegalArgumentException("Unknown status description: " + description);
+	}
+
 }
