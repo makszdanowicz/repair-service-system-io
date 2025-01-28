@@ -2,11 +2,12 @@ package com.pwr.testsfitnessefixture;
 
 import com.pwr.model.*;
 import com.pwr.presenter.AssignmentFacade;
+import com.pwr.view.AdminView;
 import com.pwr.view.IAdminView;
 import com.pwr.view.IClientView;
 import com.pwr.view.ITechnicianView;
 import fit.ColumnFixture;
-import mockit.Mocked;
+import org.mockito.Mockito;
 import mockit.Expectations;
 
 import java.util.ArrayList;
@@ -17,40 +18,24 @@ public class TestSendNewRequests extends ColumnFixture {
     public Integer[] requestsId;
     public String[] statuses;
 
-    @Mocked
-    private ClientDAO clientDAO;
-
-    @Mocked
-    private RequestDAO requestDAO;
-
-    @Mocked
-    private TechnicianDAO technicianDAO;
-
-    @Mocked
-    private IAdminView adminView;
-
-    @Mocked
-    private IClientView clientView;
-
-    @Mocked
-    private ITechnicianView technicianView;
+    private RequestDAO requestDAO = Mockito.mock(RequestDAO.class);
 
 
     public boolean sendNewRequests(){
-        new Expectations(){{
-            List<Request> allRequests = new ArrayList<>();
-                for(int i = 0; i < requestsId.length; i++){
-                    Integer requestId = requestsId[i];
-                    String statusDescription = statuses[i];
-                    Status status = Status.convertDescription(statusDescription);
-                    Request request = new Request(requestId, null, null, null, status, null, null);
-                    allRequests.add(request);
-                }
-                requestDAO.getAllRequests(); result = allRequests;
-        }};
+        MockitoAnnotations.openMocks(this);
+        AdminView adminView = new AdminView();
+        AssignmentFacade assignmentFacade = new AssignmentFacade(requestDAO,null, null, adminView, null, null);
 
-        AssignmentFacade assignmentFacade = new AssignmentFacade(requestDAO, technicianDAO, clientDAO, adminView, clientView, technicianView);
+        List<Request> allRequests = new ArrayList<>();
+        for(int i = 0; i < requestsId.length; i++){
+            Integer requestId = requestsId[i];
+            String statusDescription = statuses[i];
+            Status status = Status.convertDescription(statusDescription);
+            Request request = new Request(requestId, null, null, null, status, null, null);
+            allRequests.add(request);
+        }
 
+        Mockito.when(requestDAO.getAllRequests()).thenReturn(allRequests);
         return assignmentFacade.sendNewRequests();
     }
 }
