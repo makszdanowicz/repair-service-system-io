@@ -68,7 +68,7 @@ public class AssignmentFacade {
 		adminView.displayNotification("Request with id " + idOfRequest + " successfully assigned to the technician " + idOfTechnician);
 	}
 
-	private List<Technician> getAvailableTechnicians(List<Technician> allTechnicians) {
+	public List<Technician> getAvailableTechnicians(List<Technician> allTechnicians) {
 		List<Technician> availableTechnicians = new ArrayList<>();
 		for(Technician technician : allTechnicians){
 			if(technician.isAvailability()){

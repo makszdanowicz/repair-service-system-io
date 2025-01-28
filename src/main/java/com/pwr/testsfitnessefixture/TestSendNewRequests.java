@@ -37,8 +37,6 @@ public class TestSendNewRequests extends ColumnFixture {
 
 
     public boolean sendNewRequests(){
-        AssignmentFacade assignmentFacade = new AssignmentFacade(requestDAO, technicianDAO, clientDAO, adminView, clientView, technicianView);
-
         new Expectations(){{
             List<Request> allRequests = new ArrayList<>();
                 for(int i = 0; i < requestsId.length; i++){
@@ -50,6 +48,9 @@ public class TestSendNewRequests extends ColumnFixture {
                 }
                 requestDAO.getAllRequests(); result = allRequests;
         }};
+
+        AssignmentFacade assignmentFacade = new AssignmentFacade(requestDAO, technicianDAO, clientDAO, adminView, clientView, technicianView);
+
         return assignmentFacade.sendNewRequests();
     }
 }
