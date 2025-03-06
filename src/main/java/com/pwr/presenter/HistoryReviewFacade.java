@@ -30,7 +30,7 @@ public class HistoryReviewFacade {
 	}
 
 	public void addReviewAboutRepair() {
-		String message = "Would you like to add review about your finished repair?Type 'yes' or 'no'";
+		String message = "Would you like to add review about your finished repair? Type 'yes' or 'no'";
 		boolean clientChoice = clientHistoryView.getClientChoice(message);
 		if(!clientChoice){
 			return;
